@@ -1,5 +1,6 @@
 package com.br.foodconnect.service;
 
+import com.br.foodconnect.dto.CustomerAlterDTO;
 import com.br.foodconnect.dto.CustomerRegisterDTO;
 import com.br.foodconnect.model.CustomerCredentialModel;
 import com.br.foodconnect.model.CustomerModel;
@@ -45,5 +46,31 @@ public class CustomerService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public ResponseEntity<CustomerAlterDTO> alterCustomer(CustomerAlterDTO dto) throws ParseException {
+
+        CustomerCredentialModel userCredential = customerCredentialRepository.findByEmail(dto.getEmail());
+        if (userCredential == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        CustomerModel customerModel = customerRepository.findByCredential(userCredential);
+        if (customerModel == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        customerModel.setName(dto.getName());
+        customerModel.setPhoneNumber(dto.getPhoneNumber());
+
+        if (dto.getPasssword() != null && !dto.getPasssword().isEmpty()) {
+            userCredential.setPassword(passwordService.criptografar(dto.getPasssword()));
+            customerCredentialRepository.save(userCredential);
+        }
+
+
+        customerRepository.save(customerModel);
+
+        return ResponseEntity.ok(dto);
     }
 }

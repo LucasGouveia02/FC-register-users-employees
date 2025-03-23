@@ -32,6 +32,7 @@ public class CustomerModel {
         this.phoneNumber = dto.getPhoneNumber();
     }
 
+
     public Long getId() {
         return id;
     }
@@ -63,4 +64,5 @@ public class CustomerModel {
     public void setCredential(CustomerCredentialModel credential) {
         this.credential = credential;
     }
+
 }
