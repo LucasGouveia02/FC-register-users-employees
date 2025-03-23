@@ -1,14 +1,10 @@
 package com.br.foodconnect.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter @Setter
-public class CustomerRegisterDTO {
+public class CustomerAlterDTO {
     private String name;
     private String phoneNumber;
-    private String email;
     private String password;
+    private String email;
 
     public String getName() {
         return name;
@@ -26,19 +22,19 @@ public class CustomerRegisterDTO {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getPasssword() {
+        return password;
+    }
+
+    public void setPasssword(String passsword) {
+        this.password = passsword;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

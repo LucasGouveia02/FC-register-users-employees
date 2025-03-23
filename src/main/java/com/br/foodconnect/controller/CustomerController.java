@@ -1,5 +1,6 @@
 package com.br.foodconnect.controller;
 
+import com.br.foodconnect.dto.CustomerAlterDTO;
 import com.br.foodconnect.dto.CustomerRegisterDTO;
 import com.br.foodconnect.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,10 @@ public class CustomerController {
     @PostMapping("/register")
     public ResponseEntity<CustomerRegisterDTO> registerCustomer(@RequestBody CustomerRegisterDTO dto) throws ParseException {
         return customerService.registerCustomer(dto);
+    }
+
+    @PutMapping("/alter")
+    public ResponseEntity<CustomerAlterDTO> alterCustomer(@RequestBody CustomerAlterDTO dto) throws ParseException {
+        return customerService.alterCustomer(dto);
     }
 }

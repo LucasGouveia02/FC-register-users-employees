@@ -10,8 +10,7 @@ import lombok.Setter;
 @Table(name = "customer-credential")
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class CustomerCredentialModel {
 
     @Id
@@ -20,4 +19,40 @@ public class CustomerCredentialModel {
     private String email;
     private String password;
     private Boolean isEnabled;
+
+    public CustomerCredentialModel() {
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Boolean getEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
+    }
 }

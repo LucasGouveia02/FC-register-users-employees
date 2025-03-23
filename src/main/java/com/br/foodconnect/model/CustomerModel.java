@@ -12,8 +12,7 @@ import lombok.Setter;
 @Table(name = "customer")
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class CustomerModel {
 
     @Id
@@ -29,5 +28,32 @@ public class CustomerModel {
     public CustomerModel(CustomerRegisterDTO dto) {
         this.name = dto.getName();
         this.phoneNumber = dto.getPhoneNumber();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public CustomerCredentialModel getCredential() {
+        return credential;
+    }
+
+    public void setCredential(CustomerCredentialModel credential) {
+        this.credential = credential;
+    }
+
+    public CustomerModel() {
     }
 }
