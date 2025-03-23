@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "customer-credential")
+@Table(name = "customer_credential")
 public class CustomerCredentialModel {
 
     @Id
