@@ -2,17 +2,16 @@ package com.br.foodconnect.model;
 
 import com.br.foodconnect.dto.CustomerRegisterDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "customer")
-@Getter
-@Setter
-
 public class CustomerModel {
 
     @Id
@@ -25,9 +24,21 @@ public class CustomerModel {
     @JoinColumn(name = "customer_credential_id")
     private CustomerCredentialModel credential;
 
+    public CustomerModel() {
+    }
+
     public CustomerModel(CustomerRegisterDTO dto) {
         this.name = dto.getName();
         this.phoneNumber = dto.getPhoneNumber();
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -54,6 +65,4 @@ public class CustomerModel {
         this.credential = credential;
     }
 
-    public CustomerModel() {
-    }
 }
