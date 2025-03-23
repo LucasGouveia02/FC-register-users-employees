@@ -33,14 +33,15 @@ public class CustomerService {
             CustomerCredentialModel customerCredentialModel = new CustomerCredentialModel();
             customerCredentialModel.setEmail(dto.getEmail());
             customerCredentialModel.setPassword(passwordService.criptografar(dto.getPassword()));
+            customerCredentialModel.setEnabled(Boolean.TRUE);
             CustomerCredentialModel savedCustomerCredentialModel = customerCredentialRepository.save(customerCredentialModel);
 
             CustomerModel customer = new CustomerModel(dto);
             customer.setCredential(savedCustomerCredentialModel);
-            customerRepository.save(customer);
+            CustomerModel customersaved = customerRepository.save(customer);
+            CustomerRegisterDTO customerRegisterDTO = new CustomerRegisterDTO(customersaved, savedCustomerCredentialModel);
 
-            dto.setPassword("");
-            return new ResponseEntity<>(dto, HttpStatus.CREATED);
+            return new ResponseEntity<>(customerRegisterDTO, HttpStatus.CREATED);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
