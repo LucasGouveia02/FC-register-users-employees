@@ -4,14 +4,10 @@ import com.br.foodconnect.dto.CustomerRegisterDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "customer")
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerModel {
@@ -29,5 +25,9 @@ public class CustomerModel {
     public CustomerModel(CustomerRegisterDTO dto) {
         this.name = dto.getName();
         this.phoneNumber = dto.getPhoneNumber();
+    }
+
+    public void setCredential(CustomerCredentialModel credential) {
+        this.credential = credential;
     }
 }

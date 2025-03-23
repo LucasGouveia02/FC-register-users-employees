@@ -8,8 +8,6 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "employee-credential")
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeCredentialModel {
@@ -21,4 +19,20 @@ public class EmployeeCredentialModel {
     private String password;
     private Boolean isEnabled;
     private String role;
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }
