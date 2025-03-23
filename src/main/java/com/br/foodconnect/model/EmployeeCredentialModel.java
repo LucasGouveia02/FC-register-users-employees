@@ -20,4 +20,20 @@ public class EmployeeCredentialModel {
 
     public EmployeeCredentialModel() {
     }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }

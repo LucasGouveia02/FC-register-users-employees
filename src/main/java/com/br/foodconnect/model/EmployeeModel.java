@@ -1,5 +1,6 @@
 package com.br.foodconnect.model;
 
+import com.br.foodconnect.dto.EmployeeRegisterDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +30,11 @@ public class EmployeeModel {
 
     public EmployeeModel() {
     }
+  
+   public EmployeeModel(EmployeeRegisterDTO dto) {
+        this.name = dto.getName();
+        this.phoneNumber = dto.getPhoneNumber();
+   }
 
     public Long getId() {
         return id;
