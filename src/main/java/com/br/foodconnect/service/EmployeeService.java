@@ -1,6 +1,9 @@
 package com.br.foodconnect.service;
 
 import com.br.foodconnect.dto.EmployeeRegisterDTO;
+import com.br.foodconnect.dto.ErrorResponseDTO;
+import com.br.foodconnect.model.CustomerCredentialModel;
+import com.br.foodconnect.model.CustomerModel;
 import com.br.foodconnect.model.EmployeeCredentialModel;
 import com.br.foodconnect.model.EmployeeModel;
 import com.br.foodconnect.repository.EmployeeCredentialRepository;
@@ -22,10 +25,15 @@ public class EmployeeService {
 
     public ResponseEntity registerEmployee(EmployeeRegisterDTO dto) {
         try {
-            EmployeeCredentialModel userCredential = employeeCredentialRepository.findByEmail(dto.getEmail());
+            EmployeeCredentialModel employeeCredential = employeeCredentialRepository.findByEmail(dto.getEmail());
+            EmployeeModel employeePhoneNumber = employeeRepository.findByPhoneNumber(dto.getPhoneNumber());
 
-            if (userCredential != null) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            if (employeeCredential != null && employeePhoneNumber != null) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDTO("Este e-mail e este número de telefone já foram cadastrados, por favor forneça outro."));
+            } else if (employeeCredential != null) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDTO("Este e-mail já foi cadastrado, por favor forneça outro."));
+            } else if (employeePhoneNumber != null) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDTO("Este número de telefone já foi cadastrado, por favor forneça outro."));
             }
             EmployeeCredentialModel employeeCredentialModel = new EmployeeCredentialModel();
             employeeCredentialModel.setEmail(dto.getEmail());

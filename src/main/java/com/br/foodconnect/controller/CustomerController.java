@@ -18,7 +18,7 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PostMapping("/register")
-    public ResponseEntity<CustomerRegisterDTO> registerCustomer(@RequestBody CustomerRegisterDTO dto) throws ParseException {
+    public ResponseEntity<?> registerCustomer(@RequestBody CustomerRegisterDTO dto) throws ParseException {
         return customerService.registerCustomer(dto);
     }
 

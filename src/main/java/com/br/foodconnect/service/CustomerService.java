@@ -2,6 +2,7 @@ package com.br.foodconnect.service;
 
 import com.br.foodconnect.dto.CustomerAlterDTO;
 import com.br.foodconnect.dto.CustomerRegisterDTO;
+import com.br.foodconnect.dto.ErrorResponseDTO;
 import com.br.foodconnect.model.CustomerCredentialModel;
 import com.br.foodconnect.model.CustomerModel;
 import com.br.foodconnect.repository.CustomerCredentialRepository;
@@ -24,12 +25,17 @@ public class CustomerService {
 
     private PasswordService passwordService = new PasswordService();
 
-    public ResponseEntity<CustomerRegisterDTO> registerCustomer(CustomerRegisterDTO dto) throws ParseException {
+    public ResponseEntity<?> registerCustomer(CustomerRegisterDTO dto) {
         try {
             CustomerCredentialModel userCredential = customerCredentialRepository.findByEmail(dto.getEmail());
+            CustomerModel customerPhoneNumber = customerRepository.findByPhoneNumber(dto.getPhoneNumber());
 
-            if (userCredential != null) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            if (userCredential != null && customerPhoneNumber != null) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDTO("Este e-mail e este número de telefone já foram cadastrados, por favor forneça outro."));
+            } else if (userCredential != null) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDTO("Este e-mail já foi cadastrado, por favor forneça outro."));
+            } else if (customerPhoneNumber != null) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDTO("Este número de telefone já foi cadastrado, por favor forneça outro."));
             }
             CustomerCredentialModel customerCredentialModel = new CustomerCredentialModel();
             customerCredentialModel.setEmail(dto.getEmail());
