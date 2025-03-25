@@ -14,7 +14,7 @@ public class StoreModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String cpnj;
+    private String cnpj;
     private Boolean isEnabled;
     private String FoodCourt;
 
@@ -38,11 +38,11 @@ public class StoreModel {
     }
 
     public String getCpnj() {
-        return cpnj;
+        return cnpj;
     }
 
     public void setCpnj(String cpnj) {
-        this.cpnj = cpnj;
+        this.cnpj = cpnj;
     }
 
     public Boolean getEnabled() {
