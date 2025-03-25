@@ -2,6 +2,7 @@ package com.br.foodconnect.model;
 
 import com.br.foodconnect.dto.EmployeeRegisterDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class EmployeeModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(name = "phoneNumber", unique = true)
     private String phoneNumber;
     @OneToOne
     @JoinColumn(name = "employee_credential_id")
