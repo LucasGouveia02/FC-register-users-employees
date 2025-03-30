@@ -1,9 +1,6 @@
 package com.br.foodconnect.service;
 
-import com.br.foodconnect.dto.CustomerAlterDTO;
-import com.br.foodconnect.dto.EmployeeAlterDTO;
-import com.br.foodconnect.dto.EmployeeRegisterDTO;
-import com.br.foodconnect.dto.ErrorResponseDTO;
+import com.br.foodconnect.dto.*;
 import com.br.foodconnect.model.CustomerCredentialModel;
 import com.br.foodconnect.model.CustomerModel;
 import com.br.foodconnect.model.EmployeeCredentialModel;
@@ -78,7 +75,7 @@ public class EmployeeService {
 
         return ResponseEntity.ok(employeeModel);
     }
-    public ResponseEntity<EmployeeModel> getEmployeeById(Long id) {
+    public ResponseEntity<EmployeeDTO> getEmployeeById(Long id) {
         // Busca o EmployeeModel pelo id
         EmployeeModel employeeModel = employeeRepository.findById(id).orElse(null);
 
@@ -86,6 +83,7 @@ public class EmployeeService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
-        return ResponseEntity.ok(employeeModel);
+        EmployeeDTO employeeDTO = new EmployeeDTO(employeeModel);
+        return ResponseEntity.ok(employeeDTO);
     }
 }
