@@ -1,6 +1,7 @@
 package com.br.foodconnect.controller;
 
 import com.br.foodconnect.dto.EmployeeAlterDTO;
+import com.br.foodconnect.dto.EmployeeDTO;
 import com.br.foodconnect.dto.EmployeeRegisterDTO;
 import com.br.foodconnect.model.EmployeeModel;
 import com.br.foodconnect.service.EmployeeService;
@@ -27,7 +28,7 @@ public class EmployeeController {
         return employeeService.alterEmployee(id, dto);
     }
     @GetMapping("/user/{id}")
-    public ResponseEntity<EmployeeModel> getEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id) {
         return employeeService.getEmployeeById(id);
     }
 }
