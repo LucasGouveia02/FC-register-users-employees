@@ -1,9 +1,8 @@
 package com.br.foodconnect.dto;
 
-public class CustomerAlterDTO {
+public class CustomerUpdateDTO {
     private String name;
     private String phoneNumber;
-    private String password;
     private String email;
 
     public String getName() {
@@ -20,14 +19,6 @@ public class CustomerAlterDTO {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getPasssword() {
-        return password;
-    }
-
-    public void setPasssword(String passsword) {
-        this.password = passsword;
     }
 
     public String getEmail() {
