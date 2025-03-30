@@ -1,7 +1,10 @@
 package com.br.foodconnect.controller;
 
+import com.br.foodconnect.dto.EmployeeAlterDTO;
 import com.br.foodconnect.dto.EmployeeRegisterDTO;
+import com.br.foodconnect.model.EmployeeModel;
 import com.br.foodconnect.service.EmployeeService;
+import org.apache.el.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,4 +22,13 @@ public class EmployeeController {
         return employeeService.registerEmployee(dto);
     }
 
+    @PutMapping("/alter/{id}")
+    public ResponseEntity<EmployeeModel> alterEmployee(@PathVariable Long id, @RequestBody EmployeeAlterDTO dto) throws ParseException, java.text.ParseException {
+        return employeeService.alterEmployee(id, dto);
+    }
+    @GetMapping("/user/{id}")
+    public ResponseEntity<EmployeeModel> getEmployeeById(@PathVariable Long id) {
+        return employeeService.getEmployeeById(id);
+    }
 }
+
