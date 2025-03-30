@@ -1,8 +1,9 @@
 package com.br.foodconnect.service;
 
-import com.br.foodconnect.dto.CustomerAlterDTO;
+import com.br.foodconnect.dto.CustomerUpdateDTO;
 import com.br.foodconnect.dto.CustomerRegisterDTO;
 import com.br.foodconnect.dto.ErrorResponseDTO;
+import com.br.foodconnect.dto.UpdatePasswordDTO;
 import com.br.foodconnect.model.CustomerCredentialModel;
 import com.br.foodconnect.model.CustomerModel;
 import com.br.foodconnect.repository.CustomerCredentialRepository;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 
@@ -54,7 +56,7 @@ public class CustomerService {
         }
     }
 
-    public ResponseEntity<CustomerAlterDTO> alterCustomer(CustomerAlterDTO dto) throws ParseException {
+    public ResponseEntity<CustomerUpdateDTO> updateCustomer(CustomerUpdateDTO dto) throws ParseException {
 
         CustomerCredentialModel userCredential = customerCredentialRepository.findByEmail(dto.getEmail());
         if (userCredential == null) {
@@ -69,14 +71,43 @@ public class CustomerService {
         customerModel.setName(dto.getName());
         customerModel.setPhoneNumber(dto.getPhoneNumber());
 
-        if (dto.getPasssword() != null && !dto.getPasssword().isEmpty()) {
-            userCredential.setPassword(passwordService.criptografar(dto.getPasssword()));
-            customerCredentialRepository.save(userCredential);
-        }
-
-
         customerRepository.save(customerModel);
 
         return ResponseEntity.ok(dto);
     }
+
+    @Transactional
+    public ResponseEntity<?> updatePassword(UpdatePasswordDTO dto) {
+        System.out.println("Procurando usuário com o email: " + dto.getEmail());
+        CustomerCredentialModel customerCredentialModel = customerCredentialRepository.findByEmail(dto.getEmail());
+
+        if (customerCredentialModel == null) {
+            return new ResponseEntity<>("Usuário não encontrado", HttpStatus.NOT_FOUND);
+        }
+
+        // Verificação se a nova senha é válida (mínimo de caracteres ou qualquer outra regra)
+        if (dto.getPassword().length() < 6) {
+            return new ResponseEntity<>("A nova senha deve ter pelo menos 6 caracteres", HttpStatus.BAD_REQUEST);
+        }
+
+        // Verificação se a nova senha é igual à senha atual
+        if (dto.getPassword().equals(customerCredentialModel.getPassword())) {
+            return new ResponseEntity<>("A nova senha não pode ser a mesma que a senha atual", HttpStatus.BAD_REQUEST);
+        }
+
+        // Criptografar a nova senha
+        String encryptedPassword = passwordService.criptografar(dto.getPassword());
+
+        // Atualizar a senha
+        customerCredentialModel.setPassword(encryptedPassword);
+
+        try {
+            customerCredentialRepository.save(customerCredentialModel);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Erro ao atualizar a senha", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>("Senha atualizada com sucesso", HttpStatus.OK);
+    }
 }
+

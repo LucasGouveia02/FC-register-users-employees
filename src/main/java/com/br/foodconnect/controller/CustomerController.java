@@ -1,7 +1,8 @@
 package com.br.foodconnect.controller;
 
-import com.br.foodconnect.dto.CustomerAlterDTO;
+import com.br.foodconnect.dto.CustomerUpdateDTO;
 import com.br.foodconnect.dto.CustomerRegisterDTO;
+import com.br.foodconnect.dto.UpdatePasswordDTO;
 import com.br.foodconnect.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,13 @@ public class CustomerController {
         return customerService.registerCustomer(dto);
     }
 
-    @PutMapping("/alter")
-    public ResponseEntity<CustomerAlterDTO> alterCustomer(@RequestBody CustomerAlterDTO dto) throws ParseException {
-        return customerService.alterCustomer(dto);
+    @PutMapping("/update")
+    public ResponseEntity<CustomerUpdateDTO> updateCustomer(@RequestBody CustomerUpdateDTO dto) throws ParseException {
+        return customerService.updateCustomer(dto);
+    }
+
+    @PutMapping("/updatePassword")
+    public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordDTO dto) throws ParseException {
+        return customerService.updatePassword(dto);
     }
 }
