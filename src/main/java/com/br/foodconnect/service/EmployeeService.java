@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -85,5 +87,9 @@ public class EmployeeService {
 
         EmployeeDTO employeeDTO = new EmployeeDTO(employeeModel);
         return ResponseEntity.ok(employeeDTO);
+    }
+    public List<EmployeeDTO> getAllEmployees() {
+        List<EmployeeModel> employees = employeeRepository.findAll();
+        return employees.stream().map(EmployeeDTO::new).collect(Collectors.toList());
     }
 }
