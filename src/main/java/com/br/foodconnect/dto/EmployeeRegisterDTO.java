@@ -8,6 +8,7 @@ public class EmployeeRegisterDTO {
     private String password;
     private String role;
     private Boolean isEnabled;
+    private Long storeId;
 
     public String getName() {
         return name;
@@ -56,4 +57,8 @@ public class EmployeeRegisterDTO {
     public void setEnabled(Boolean enabled) {
         isEnabled = enabled;
     }
+
+    public Long getStoreId() { return storeId; }
+
+    public void setStoreId(Long storeId) { this.storeId = storeId; }
 }

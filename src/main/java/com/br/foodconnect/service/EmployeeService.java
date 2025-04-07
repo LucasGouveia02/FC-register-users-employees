@@ -1,12 +1,10 @@
 package com.br.foodconnect.service;
 
 import com.br.foodconnect.dto.*;
-import com.br.foodconnect.model.CustomerCredentialModel;
-import com.br.foodconnect.model.CustomerModel;
-import com.br.foodconnect.model.EmployeeCredentialModel;
-import com.br.foodconnect.model.EmployeeModel;
+import com.br.foodconnect.model.*;
 import com.br.foodconnect.repository.EmployeeCredentialRepository;
 import com.br.foodconnect.repository.EmployeeRepository;
+import com.br.foodconnect.repository.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +21,9 @@ public class EmployeeService {
 
     @Autowired
     private EmployeeCredentialRepository employeeCredentialRepository;
+
+    @Autowired
+    private StoreRepository storeRepository;
 
     private PasswordService passwordService = new PasswordService();
 
@@ -46,6 +47,11 @@ public class EmployeeService {
             EmployeeCredentialModel savedEmployeeCredentialModel = employeeCredentialRepository.save(employeeCredentialModel);
 
             EmployeeModel employee = new EmployeeModel(dto);
+
+            StoreModel store = storeRepository.findById(dto.getStoreId()).orElseThrow(() -> new RuntimeException("Loja não encontrada com ID: " + dto.getStoreId()));
+
+            employee.setStore(store);
+
             employee.setCredential(savedEmployeeCredentialModel);
             employeeRepository.save(employee);
 
