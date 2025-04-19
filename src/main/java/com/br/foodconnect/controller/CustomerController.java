@@ -2,6 +2,7 @@ package com.br.foodconnect.controller;
 
 import com.br.foodconnect.dto.CustomerUpdateDTO;
 import com.br.foodconnect.dto.CustomerRegisterDTO;
+import com.br.foodconnect.dto.ResetPasswordDTO;
 import com.br.foodconnect.dto.UpdatePasswordDTO;
 import com.br.foodconnect.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,4 +33,10 @@ public class CustomerController {
     public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordDTO dto) throws ParseException {
         return customerService.updatePassword(dto);
     }
+
+    @PatchMapping("/resetPassword")
+    public ResponseEntity<String> redefinirSenha(@RequestBody ResetPasswordDTO resetPasswordDTO) {
+        return customerService.resetPassword(resetPasswordDTO);
+    }
+
 }

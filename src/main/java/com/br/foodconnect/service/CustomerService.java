@@ -1,9 +1,6 @@
 package com.br.foodconnect.service;
 
-import com.br.foodconnect.dto.CustomerUpdateDTO;
-import com.br.foodconnect.dto.CustomerRegisterDTO;
-import com.br.foodconnect.dto.ErrorResponseDTO;
-import com.br.foodconnect.dto.UpdatePasswordDTO;
+import com.br.foodconnect.dto.*;
 import com.br.foodconnect.model.CustomerCredentialModel;
 import com.br.foodconnect.model.CustomerModel;
 import com.br.foodconnect.repository.CustomerCredentialRepository;
@@ -109,5 +106,27 @@ public class CustomerService {
 
         return new ResponseEntity<>("Senha atualizada com sucesso", HttpStatus.OK);
     }
+
+    @Transactional
+    public ResponseEntity<String> resetPassword(ResetPasswordDTO resetPasswordDTO) {
+        CustomerCredentialModel customerCredentialModel = customerCredentialRepository.findByEmail(resetPasswordDTO.email());
+
+        if(customerCredentialModel == null){
+            return new ResponseEntity<>("Credential not found", HttpStatus.NOT_FOUND);
+        }
+
+        if(passwordService.verificarSenha(resetPasswordDTO.password(), customerCredentialModel.getPassword())){
+            return new ResponseEntity<>("The new password cannot be the same as the old password", HttpStatus.CONFLICT);
+        }
+
+        try{
+            customerCredentialModel.setPassword(passwordService.criptografar(resetPasswordDTO.password()));
+            customerCredentialRepository.save(customerCredentialModel);
+            return new ResponseEntity<>("Password reset successful", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Have a unexpected error: " + e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
 
