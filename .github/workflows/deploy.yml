@@ -19,25 +19,60 @@ jobs:
 
       - name: Deploy via SSH
         run: |
-          ssh -o StrictHostKeyChecking=no FoodConnect@4.201.144.173 "
+          ssh -o StrictHostKeyChecking=no FoodConnect@4.201.144.173 '
             set -e
-            cd /home/FoodConnect/foodconnect-backend/register-users-employees &&
+            PROJECT_DIR="/home/FoodConnect/foodconnect-backend"
+            SERVICE_NAME="register-users-employees"
+            TEST_IMAGE="${SERVICE_NAME}_test"
+            LOG_DIR="$HOME/logs"
+            CREDENTIALS_PATH="/home/FoodConnect/credentials"
 
-            git pull origin main &&
+            cd $PROJECT_DIR/$SERVICE_NAME
 
-            # Voltar para a raiz do projeto Docker
-            cd .. &&
+            echo "Atualizando código fonte..."
+            git pull origin main
 
-            # Parar e remover containers existentes
-            docker-compose down || true
+            echo "Construindo imagem de teste..."
+            docker build -t $TEST_IMAGE .
 
-            # Remover imagens órfãs ou corrompidas (se houver)
-            docker image prune -af || true
+            echo "Verificando container de teste rodando em 8089..."
+            TEST_CONTAINER_ID=$(docker ps -q -f publish=8089)
+            if [ ! -z "$TEST_CONTAINER_ID" ]; then
+              docker stop $TEST_CONTAINER_ID
+              docker rm -f $TEST_CONTAINER_ID
+            fi
 
-            # Remover volumes não utilizados (evita conflitos com mounts antigos)
-            docker volume prune -f || true
+            echo "Subindo container de teste com a nova imagem..."
+            docker run -d --name ${SERVICE_NAME}_test -p 8089:8080 \
+              -v $CREDENTIALS_PATH:/credentials:ro \
+              $TEST_IMAGE
 
-            # Rebuild completo e subir tudo novamente
-            docker-compose build --no-cache
-            docker-compose up -d
-          "
+            echo "Aguardando container iniciar..."
+            sleep 10
+
+            echo "Verificando se container de teste subiu corretamente..."
+            docker logs ${SERVICE_NAME}_test | grep -q "Started" || {
+              echo "Erro detectado! Salvando logs..."
+              mkdir -p $LOG_DIR
+              docker logs ${SERVICE_NAME}_test > $LOG_DIR/${SERVICE_NAME}_test-$(date +%Y%m%d-%H%M%S).log
+              docker rm -f ${SERVICE_NAME}_test
+              echo "Abortando deploy."
+              exit 1
+            }
+
+            echo "Parando e removendo container antigo do docker-compose..."
+            cd $PROJECT_DIR
+            docker compose stop $SERVICE_NAME || true
+            docker compose rm -f $SERVICE_NAME || true
+
+            echo "Atualizando imagem no docker-compose e subindo..."
+            docker tag $TEST_IMAGE $SERVICE_NAME
+            docker rmi $TEST_IMAGE || true
+
+            docker compose up -d --no-deps --build $SERVICE_NAME
+
+            echo "Removendo container de teste..."
+            docker rm -f ${SERVICE_NAME}_test || true
+
+            echo "Deploy finalizado com sucesso!"
+          '
