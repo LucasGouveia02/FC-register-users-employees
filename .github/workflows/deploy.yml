@@ -1,0 +1,43 @@
+name: Deploy to Azure VM
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy via SSH
+        run: |
+          ssh -o StrictHostKeyChecking=no FoodConnect@4.201.144.173 "
+            set -e
+            cd /home/FoodConnect/foodconnect-backend/register-users-employees &&
+
+            git pull origin main &&
+
+            # Voltar para a raiz do projeto Docker
+            cd .. &&
+
+            # Parar e remover containers existentes
+            docker-compose down || true
+
+            # Remover imagens órfãs ou corrompidas (se houver)
+            docker image prune -af || true
+
+            # Remover volumes não utilizados (evita conflitos com mounts antigos)
+            docker volume prune -f || true
+
+            # Rebuild completo e subir tudo novamente
+            docker-compose build --no-cache
+            docker-compose up -d
+          "
