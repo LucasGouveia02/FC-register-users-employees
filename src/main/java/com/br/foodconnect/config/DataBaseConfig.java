@@ -25,6 +25,9 @@ public class DataBaseConfig {
         String dbDriverName = dotenv.get("DB_DRIVER_NAME");
         String dbUrl = dotenv.get("DB_URL");
 
+        System.out.println("Username Path: " + usernamePath);
+        System.out.println("Password Path: " + passwordPath);
+
         String username = new String(Files.readAllBytes(Paths.get(usernamePath)));
         String password = new String(Files.readAllBytes(Paths.get(passwordPath)));
 
