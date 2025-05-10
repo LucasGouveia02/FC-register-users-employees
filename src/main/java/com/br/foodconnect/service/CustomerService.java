@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Service
 public class CustomerService {
@@ -40,6 +43,12 @@ public class CustomerService {
             customerCredentialModel.setEmail(dto.getEmail());
             customerCredentialModel.setPassword(passwordService.criptografar(dto.getPassword()));
             customerCredentialModel.setEnabled(Boolean.TRUE);
+            customerCredentialModel.setHasAcceptedTerms(Boolean.TRUE);
+
+            ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"));
+            Date date = Date.from(zonedDateTime.toInstant());
+            customerCredentialModel.setTermsAcceptedAt(date);
+
             CustomerCredentialModel savedCustomerCredentialModel = customerCredentialRepository.save(customerCredentialModel);
 
             CustomerModel customer = new CustomerModel(dto);
