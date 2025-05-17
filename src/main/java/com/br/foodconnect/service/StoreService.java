@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class StoreService {
 
@@ -36,6 +38,16 @@ public class StoreService {
         return ResponseEntity.ok("Loja registrada com sucesso!");
     }
 
+    public boolean getStoreStatus(Long storeId) {
+        Optional<StoreModel> storeOpt = storeRepository.findById(storeId);
+
+        if (storeOpt.isPresent()) {
+            return storeOpt.get().getOpen(); // Ensure `isOpen` exists in `StoreModel`
+        }
+
+        // Return false if the store is not found
+        return false;
+    }
     public ResponseEntity<?> openCloseStore(Boolean open, Long storeId) {
         StoreModel storeModel = storeRepository.findById(storeId).orElse(null);
         if (storeModel == null) {
