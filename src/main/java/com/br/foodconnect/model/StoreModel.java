@@ -17,6 +17,7 @@ public class StoreModel {
     private String cnpj;
     private Boolean isEnabled;
     private String FoodCourt;
+    private Boolean isOpen;
 
     public StoreModel() {
     }
@@ -59,5 +60,13 @@ public class StoreModel {
 
     public void setFoodCourt(String foodCourt) {
         FoodCourt = foodCourt;
+    }
+
+    public Boolean getOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(Boolean open) {
+        isOpen = open;
     }
 }

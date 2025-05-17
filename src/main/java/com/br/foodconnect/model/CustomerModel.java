@@ -1,6 +1,6 @@
 package com.br.foodconnect.model;
 
-import com.br.foodconnect.dto.CustomerRegisterDTO;
+import com.br.foodconnect.dto.request.CustomerRegisterDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
