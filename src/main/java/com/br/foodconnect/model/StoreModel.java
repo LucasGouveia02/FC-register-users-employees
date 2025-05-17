@@ -69,4 +69,8 @@ public class StoreModel {
     public void setOpen(Boolean open) {
         isOpen = open;
     }
+
+
+
+
 }
