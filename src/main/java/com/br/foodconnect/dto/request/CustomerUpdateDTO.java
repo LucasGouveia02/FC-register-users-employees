@@ -1,4 +1,4 @@
-package com.br.foodconnect.dto;
+package com.br.foodconnect.dto.request;
 
 public class CustomerUpdateDTO {
     private String name;

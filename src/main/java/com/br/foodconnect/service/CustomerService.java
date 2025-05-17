@@ -1,6 +1,8 @@
 package com.br.foodconnect.service;
 
 import com.br.foodconnect.dto.*;
+import com.br.foodconnect.dto.request.CustomerRegisterDTO;
+import com.br.foodconnect.dto.request.CustomerUpdateDTO;
 import com.br.foodconnect.model.CustomerCredentialModel;
 import com.br.foodconnect.model.CustomerModel;
 import com.br.foodconnect.repository.CustomerCredentialRepository;
