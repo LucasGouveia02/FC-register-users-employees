@@ -1,4 +1,4 @@
-package com.br.foodconnect.dto;
+package com.br.foodconnect.dto.request;
 
 import com.br.foodconnect.model.CustomerCredentialModel;
 import com.br.foodconnect.model.CustomerModel;

@@ -1,7 +1,7 @@
 package com.br.foodconnect.controller;
 
-import com.br.foodconnect.dto.CustomerUpdateDTO;
-import com.br.foodconnect.dto.CustomerRegisterDTO;
+import com.br.foodconnect.dto.request.CustomerUpdateDTO;
+import com.br.foodconnect.dto.request.CustomerRegisterDTO;
 import com.br.foodconnect.dto.ResetPasswordDTO;
 import com.br.foodconnect.dto.UpdatePasswordDTO;
 import com.br.foodconnect.service.CustomerService;
